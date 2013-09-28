@@ -1,0 +1,4 @@
+sf_uruguay_test:
+    resource: "@SfUruguayTestBundle/Controller/"
+    type:     annotation
+    prefix:   /test
