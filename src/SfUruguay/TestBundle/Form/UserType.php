@@ -17,10 +17,11 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
-            ->add('birthday')
+            ->add('birthday', 'birthday')
         ;
+        // El segundo parametro es el tipo. Si no tiene, toma el por defecto
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
