@@ -2,27 +2,26 @@
 
 namespace SfUruguay\TestBundle\Controller;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SfUruguay\TestBundle\Entity\User;
-use SfUruguay\TestBundle\Form\UserType;
+use SfUruguay\TestBundle\Entity\UserGroup;
+use SfUruguay\TestBundle\Form\UserGroupType;
 
 /**
- * User controller.
+ * UserGroup controller.
  *
- * @Route("/user")
+ * @Route("/groups")
  */
-class UserController extends Controller
+class UserGroupController extends Controller
 {
 
     /**
-     * Lists all User entities.
+     * Lists all UserGroup entities.
      *
-     * @Route("/", name="user")
+     * @Route("/", name="groups")
      * @Method("GET")
      * @Template()
      */
@@ -30,34 +29,31 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SfUruguayTestBundle:User')->findAll();
+        $entities = $em->getRepository('SfUruguayTestBundle:UserGroup')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new User entity.
+     * Creates a new UserGroup entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="groups_create")
      * @Method("POST")
-     * @Template("SfUruguayTestBundle:User:new.html.twig")
+     * @Template("SfUruguayTestBundle:UserGroup:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new User();
+        $entity = new UserGroup();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            $entity->upload($this->get('service_container')->getParameter('kernel.root_dir') . "/../web/uploads");
-
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('groups_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -67,16 +63,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to create a User entity.
+    * Creates a form to create a UserGroup entity.
     *
-    * @param User $entity The entity
+    * @param UserGroup $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(UserGroup $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
+        $form = $this->createForm(new UserGroupType(), $entity, array(
+            'action' => $this->generateUrl('groups_create'),
             'method' => 'POST',
         ));
 
@@ -86,15 +82,15 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to create a new User entity.
+     * Displays a form to create a new UserGroup entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="groups_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new User();
+        $entity = new UserGroup();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -104,9 +100,9 @@ class UserController extends Controller
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a UserGroup entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="groups_show")
      * @Method("GET")
      * @Template()
      */
@@ -114,10 +110,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:UserGroup')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find UserGroup entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -129,9 +125,9 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing User entity.
+     * Displays a form to edit an existing UserGroup entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="groups_edit")
      * @Method("GET")
      * @Template()
      */
@@ -139,10 +135,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:UserGroup')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find UserGroup entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -156,16 +152,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to edit a User entity.
+    * Creates a form to edit a UserGroup entity.
     *
-    * @param User $entity The entity
+    * @param UserGroup $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createEditForm(UserGroup $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new UserGroupType(), $entity, array(
+            'action' => $this->generateUrl('groups_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -174,20 +170,20 @@ class UserController extends Controller
         return $form;
     }
     /**
-     * Edits an existing User entity.
+     * Edits an existing UserGroup entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="groups_update")
      * @Method("PUT")
-     * @Template("SfUruguayTestBundle:User:edit.html.twig")
+     * @Template("SfUruguayTestBundle:UserGroup:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:UserGroup')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find UserGroup entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -195,10 +191,9 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $entity->upload($this->get('service_container')->getParameter('kernel.root_dir') . "/../web/uploads");
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('groups_edit', array('id' => $id)));
         }
 
         return array(
@@ -208,9 +203,9 @@ class UserController extends Controller
         );
     }
     /**
-     * Deletes a User entity.
+     * Deletes a UserGroup entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="groups_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -220,21 +215,21 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+            $entity = $em->getRepository('SfUruguayTestBundle:UserGroup')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find UserGroup entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('groups'));
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a UserGroup entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -243,7 +238,7 @@ class UserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('groups_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

@@ -17,9 +17,24 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
+            ->add('avatar', 'file')
             ->add('birthday', 'birthday')
+            ->add('group', 'entity', array(
+                'class' => 'SfUruguay\TestBundle\Entity\UserGroup',
+                'expanded' => true,
+                'multiple' => false,
+            ))
+
         ;
+        /*
         // El segundo parametro es el tipo. Si no tiene, toma el por defecto
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){
+            $user = $event->getData(); // Retorna el modelo
+            if (!$user->isAdmin()){
+                $event->getForm()->remove('email'); // No se le va a mostrar el email si no es admin.
+            }
+        });
+        */
     }
 
     /**

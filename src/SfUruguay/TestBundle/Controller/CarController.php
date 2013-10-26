@@ -2,27 +2,26 @@
 
 namespace SfUruguay\TestBundle\Controller;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use SfUruguay\TestBundle\Entity\User;
-use SfUruguay\TestBundle\Form\UserType;
+use SfUruguay\TestBundle\Entity\Car;
+use SfUruguay\TestBundle\Form\CarType;
 
 /**
- * User controller.
+ * Car controller.
  *
- * @Route("/user")
+ * @Route("/cars")
  */
-class UserController extends Controller
+class CarController extends Controller
 {
 
     /**
-     * Lists all User entities.
+     * Lists all Car entities.
      *
-     * @Route("/", name="user")
+     * @Route("/", name="cars")
      * @Method("GET")
      * @Template()
      */
@@ -30,34 +29,31 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('SfUruguayTestBundle:User')->findAll();
+        $entities = $em->getRepository('SfUruguayTestBundle:Car')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new User entity.
+     * Creates a new Car entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="cars_create")
      * @Method("POST")
-     * @Template("SfUruguayTestBundle:User:new.html.twig")
+     * @Template("SfUruguayTestBundle:Car:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new User();
+        $entity = new Car();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            $entity->upload($this->get('service_container')->getParameter('kernel.root_dir') . "/../web/uploads");
-
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('cars', array('id' => $entity->getId())));
         }
 
         return array(
@@ -67,16 +63,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to create a User entity.
+    * Creates a form to create a Car entity.
     *
-    * @param User $entity The entity
+    * @param Car $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(Car $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
+        $form = $this->createForm(new CarType(), $entity, array(
+            'action' => $this->generateUrl('cars_create'),
             'method' => 'POST',
         ));
 
@@ -86,15 +82,15 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to create a new User entity.
+     * Displays a form to create a new Car entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="cars_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new User();
+        $entity = new Car();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -104,9 +100,9 @@ class UserController extends Controller
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Car entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="cars_show")
      * @Method("GET")
      * @Template()
      */
@@ -114,10 +110,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:Car')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Car entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -129,9 +125,9 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing User entity.
+     * Displays a form to edit an existing Car entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="cars_edit")
      * @Method("GET")
      * @Template()
      */
@@ -139,10 +135,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:Car')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Car entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -156,16 +152,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to edit a User entity.
+    * Creates a form to edit a Car entity.
     *
-    * @param User $entity The entity
+    * @param Car $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createEditForm(Car $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CarType(), $entity, array(
+            'action' => $this->generateUrl('cars_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -174,20 +170,20 @@ class UserController extends Controller
         return $form;
     }
     /**
-     * Edits an existing User entity.
+     * Edits an existing Car entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="cars_update")
      * @Method("PUT")
-     * @Template("SfUruguayTestBundle:User:edit.html.twig")
+     * @Template("SfUruguayTestBundle:Car:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+        $entity = $em->getRepository('SfUruguayTestBundle:Car')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Car entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -195,10 +191,9 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $entity->upload($this->get('service_container')->getParameter('kernel.root_dir') . "/../web/uploads");
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('cars_edit', array('id' => $id)));
         }
 
         return array(
@@ -208,9 +203,9 @@ class UserController extends Controller
         );
     }
     /**
-     * Deletes a User entity.
+     * Deletes a Car entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="cars_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -220,21 +215,21 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
+            $entity = $em->getRepository('SfUruguayTestBundle:Car')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Car entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('cars'));
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a Car entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -243,7 +238,7 @@ class UserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('cars_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
