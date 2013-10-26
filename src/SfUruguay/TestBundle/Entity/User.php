@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * User
  *
  * @ORM\Table(name="users")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="SfUruguay\TestBundle\Entity\UserRepository")
  */
 class User
 {
