@@ -186,7 +186,7 @@ class UserController extends Controller
 
         $entity = $em->getRepository('SfUruguayTestBundle:User')->find($id);
 
-        if (!$entity) {
+        if (!$entity instanceof User) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 

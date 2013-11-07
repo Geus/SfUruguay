@@ -20,9 +20,7 @@ class UserType extends AbstractType
             ->add('avatar', 'file')
             ->add('birthday', 'birthday')
             ->add('group', 'entity', array(
-                'class' => 'SfUruguay\TestBundle\Entity\UserGroup',
-                'expanded' => true,
-                'multiple' => false,
+                'class' => 'SfUruguay\TestBundle\Entity\UserGroup'
             ))
 
         ;
