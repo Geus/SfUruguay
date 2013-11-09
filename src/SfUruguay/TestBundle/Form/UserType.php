@@ -17,12 +17,10 @@ class UserType extends AbstractType
         $builder
             ->add('name')
             ->add('email')
-            ->add('avatar', 'file')
+            ->add('file', 'file')
             ->add('birthday', 'birthday')
             ->add('group', 'entity', array(
-                'class' => 'SfUruguay\TestBundle\Entity\UserGroup',
-                'expanded' => true,
-                'multiple' => false,
+                'class' => 'SfUruguay\TestBundle\Entity\UserGroup'
             ))
 
         ;
